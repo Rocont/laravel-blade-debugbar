@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:php-debugbar.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(composer install:*)",
+      "Bash(vendor/bin/phpunit 2>&1)",
+      "Bash(git init:*)",
+      "Bash(composer update:*)"
+    ]
+  }
+}

@@ -2,7 +2,7 @@
 
 namespace Rocont\BladeDebugbar;
 
-use Barryvdh\Debugbar\Facades\Debugbar;
+use Fruitcake\LaravelDebugbar\Facades\Debugbar;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
