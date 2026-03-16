@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View;
+use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Symfony\Component\VarDumper\Dumper\CliDumper;
 
 class BladeVariablesCollector extends DataCollector implements Renderable
 {
@@ -116,6 +118,14 @@ class BladeVariablesCollector extends DataCollector implements Renderable
         return $this->collectFlat();
     }
 
+    protected function dumpVar(mixed $value): string
+    {
+        $cloner = new VarCloner();
+        $dumper = new CliDumper();
+
+        return (string) $dumper->dump($cloner->cloneVar($value), true);
+    }
+
     protected function collectGrouped(): array
     {
         $result = [];
@@ -124,7 +134,7 @@ class BladeVariablesCollector extends DataCollector implements Renderable
             foreach ($viewInfo['data'] as $key => $value) {
                 $prefix = $this->getVariablePrefix($key, $viewInfo['shared_keys']);
                 $label = $viewName . ' → ' . $prefix . '$' . $key;
-                $result[$label] = $this->getDataFormatter()->formatVar($value);
+                $result[$label] = $this->dumpVar($value);
             }
         }
 
@@ -141,7 +151,7 @@ class BladeVariablesCollector extends DataCollector implements Renderable
             foreach ($viewInfo['data'] as $key => $value) {
                 $prefix = $this->getVariablePrefix($key, $viewInfo['shared_keys']);
                 $label = $prefix . '$' . $key;
-                $result[$label] = $this->getDataFormatter()->formatVar($value);
+                $result[$label] = $this->dumpVar($value);
             }
         }
 
